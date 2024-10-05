@@ -135,7 +135,7 @@ else if (number == "5")
 
     using (HttpClient client = new HttpClient())
     {
-      
+
         string json = JsonConvert.SerializeObject(newWeather);
         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
         HttpResponseMessage response = await client.PutAsync(url, content);
@@ -144,7 +144,27 @@ else if (number == "5")
 }
 else if (number == "6")
 {
-    Console.WriteLine("Get City By ID");
+    string url = "https://localhost:7281/api/Weathers";
+    Console.Write("Choose the ID that you would like to get.");
+    int id = int.Parse(Console.ReadLine());
+    Console.WriteLine();
+    using (HttpClient client = new HttpClient())
+    {
+        HttpResponseMessage response = await client.GetAsync(url +id);
+        string responseBody = await response.Content.ReadAsStringAsync();
+        JObject jObject = JObject.Parse(responseBody);
+        string cityName = jObject["CityName"].ToString();
+        string country = jObject["Country"].ToString();
+        decimal temp = decimal.Parse(jObject["Temp"].ToString());
+        string detail = jObject["Detail"].ToString();
+        Console.WriteLine("City Name: " + cityName);
+        Console.WriteLine("Country: " + country);
+        Console.WriteLine("Temp: " + temp);
+        Console.WriteLine("Detail: " + detail);
+        response.EnsureSuccessStatusCode();
+
+    }
+
 }
 else
 {
