@@ -2,6 +2,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Text;
 
 Console.WriteLine("Welcome To Api Consume");
@@ -106,6 +107,40 @@ else if (number == "4")
 else if (number == "5")
 {
     Console.WriteLine("Update City");
+    Console.WriteLine();
+    string cityName, country, detail;
+    decimal temp;
+    int cityId;
+    Console.Write("City Name:");
+    cityName = Console.ReadLine();
+    Console.Write("Country:");
+    country = Console.ReadLine();
+    Console.Write("Temp:");
+    temp = decimal.Parse(Console.ReadLine());
+    Console.Write("Detail:");
+    detail = Console.ReadLine();
+
+    Console.Write("City ID:");
+    cityId = int.Parse(Console.ReadLine());
+    var newWeather = new
+    {
+        CityId = cityId,
+        CityName = cityName,
+        Country = country,
+        Temp = temp,
+        Detail = detail
+    };
+
+    string url = "https://localhost:7281/api/Weathers";
+
+    using (HttpClient client = new HttpClient())
+    {
+      
+        string json = JsonConvert.SerializeObject(newWeather);
+        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+        HttpResponseMessage response = await client.PutAsync(url, content);
+        response.EnsureSuccessStatusCode();
+    }
 }
 else if (number == "6")
 {
