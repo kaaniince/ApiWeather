@@ -94,7 +94,7 @@ else if (number == "3")
 else if (number == "4")
 {
     Console.WriteLine("Delete City");
-    string url = "https://localhost:7281/api/Weathers";
+    string url = "https://localhost:7281/api/Weathers?id=";
     Console.Write("Choose the ID that you would like to delete.");
     int id = int.Parse(Console.ReadLine());
     using (HttpClient client = new HttpClient())
@@ -144,24 +144,24 @@ else if (number == "5")
 }
 else if (number == "6")
 {
-    string url = "https://localhost:7281/api/Weathers";
+    string url = "https://localhost:7281/api/Weathers?id=";
     Console.Write("Choose the ID that you would like to get.");
     int id = int.Parse(Console.ReadLine());
     Console.WriteLine();
     using (HttpClient client = new HttpClient())
     {
-        HttpResponseMessage response = await client.GetAsync(url +id);
+        HttpResponseMessage response = await client.GetAsync(url + id);
+        response.EnsureSuccessStatusCode();
         string responseBody = await response.Content.ReadAsStringAsync();
         JObject jObject = JObject.Parse(responseBody);
-        string cityName = jObject["CityName"].ToString();
-        string country = jObject["Country"].ToString();
-        decimal temp = decimal.Parse(jObject["Temp"].ToString());
-        string detail = jObject["Detail"].ToString();
+        string cityName = jObject["cityName"].ToString();
+        string country = jObject["country"].ToString();
+        decimal temp = decimal.Parse(jObject["temp"].ToString());
+        string detail = jObject["detail"].ToString();
         Console.WriteLine("City Name: " + cityName);
         Console.WriteLine("Country: " + country);
         Console.WriteLine("Temp: " + temp);
         Console.WriteLine("Detail: " + detail);
-        response.EnsureSuccessStatusCode();
 
     }
 
